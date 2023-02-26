@@ -1,4 +1,4 @@
-function verification_status = FCW_ISO_Verification(fcw_result, distance, velocity, relative_velocity, fcw_state, deceleration, min_distance)
+function verification_status = FCW_ISO_Verification(fcw_result, distance, velocity, relative_velocity, fcw_state, deceleration, min_distance, system_delay)
      % Verify result of FCW assistant to selected ISO 15623:2013 requirements (we are considering only requirements
      % supporting situation evaluation by FCW assistant, thus we are not considering image processing from camera, etc.)
 
@@ -14,9 +14,9 @@ function verification_status = FCW_ISO_Verification(fcw_result, distance, veloci
             verification_status = 2;
         
         else
-            distance_clearence_reduction = 0;  %how to find out
+            distance_clearence_reduction = system_delay * velocity;  % system_delay * velocity -> distance traveled from brake pedal push to braking start
     
-            dec_lead = 0; % how to find out?
+            dec_lead = 0; % how to find out? ->  generate
    
             dec_req = dec_lead + (relative_velocity^2 / ( 2 * (distance - distance_clearence_reduction)));
         
