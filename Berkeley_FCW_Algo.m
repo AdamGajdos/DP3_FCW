@@ -20,19 +20,21 @@ classdef Berkeley_FCW_Algo < FCW_Algo
             dw = 0.5 * ((velocity^2) / deceleration - ((velocity - relative_velocity) ^ 2) / deceleration) + velocity * delay + Berkeley_FCW_Algo.Algorithm_Constants.d_0;
         end
 
-        function nonDimValue = define_danger(velocity, relative_velocity, deceleration, distance, delay)
+        function [nonDimValue, warning_distance] = define_danger(velocity, relative_velocity, deceleration, distance, delay)
             d_br = Berkeley_FCW_Algo.define_d_br(velocity, relative_velocity);
 
             d_w = Berkeley_FCW_Algo.define_d_w(velocity, relative_velocity, deceleration, delay);
-
+            
+            warning_distance = d_w;
             nonDimValue = (distance - d_br) / (d_w - d_br);
+            
         end
     end
      
      methods(Static, Access = public)
-        function situation_status = Resolve(velocity, relative_velocity, deceleration, distance, delay)
+         function [situation_status, warning_distance] = Resolve(velocity, relative_velocity, deceleration, distance, delay)
            
-            non_dimensional_value = Berkeley_FCW_Algo.define_danger(velocity, relative_velocity, deceleration, distance, delay);
+            [non_dimensional_value, warning_distance] = Berkeley_FCW_Algo.define_danger(velocity, relative_velocity, deceleration, distance, delay);
 
             a = 0.0000001;
             if non_dimensional_value < a

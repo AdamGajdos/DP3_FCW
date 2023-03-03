@@ -149,9 +149,11 @@ classdef TTC_FCW_Algo < FCW_Algo
             end
         end
 
-        function sit_status = define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
+        function [sit_status, warning_distance] = define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
             [ds_min, ds_max] = TTC_FCW_Algo.define_safety_braking_distance(velocity, age, area, steep, weight, angle, is_abs_on, road_type, road_condition);
-
+            
+            warning_distance = ds_min;
+            
             ttc = distance / velocity;
 
             if distance < ds_min
@@ -166,9 +168,9 @@ classdef TTC_FCW_Algo < FCW_Algo
     end
 
     methods (Static, Access = public)
-        function situation_status = Resolve(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
+        function [situation_status, warning_distance] = Resolve(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
             
-            tmp_situation_status = TTC_FCW_Algo.define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance);
+            [tmp_situation_status, warning_distance] = TTC_FCW_Algo.define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance);
             
             if tmp_situation_status == "Safe"
                 situation_status = 1;

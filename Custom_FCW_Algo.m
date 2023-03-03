@@ -145,9 +145,11 @@ classdef Custom_FCW_Algo < FCW_Algo
             d_br = Custom_FCW_Algo.count_weighted_avg(relative_velocity, d_br1, d_br2) * Custom_FCW_Algo.define_friction_coef(is_abs_on, road_type,road_condition);
         end
 
-        function sit_status = define_danger(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance)
+        function [sit_status, warning_distance] = define_danger(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance)
             d_w = Custom_FCW_Algo.define_warning_distance(velocity, relative_velocity, delay_driver, delay_system);
             d_br = Custom_FCW_Algo.define_critical_braking_distance(velocity, relative_velocity, road_type, road_condition, is_abs_on);
+
+            warning_distance = d_w;
 
             if distance > d_w
                 sit_status = 1; %"Safe";
@@ -161,8 +163,8 @@ classdef Custom_FCW_Algo < FCW_Algo
     end
 
     methods(Static, Access = public)
-        function situation_status = Resolve(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance)
-            situation_status = Custom_FCW_Algo.define_danger(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance);
+        function [situation_status, warning_distance] = Resolve(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance)
+            [situation_status, warning_distance] = Custom_FCW_Algo.define_danger(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance);
         end
     end
 end
