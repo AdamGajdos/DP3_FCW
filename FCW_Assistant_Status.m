@@ -3,7 +3,7 @@ function fcw_status = FCW_Assistant_Status(is_fcw_on, velocity, gear)
     % fcw_status =  0 ... STATUS STAND-BY
     % fcw_status =  1 ... STATUS ACTIVE
     
-    v_min = 11.2; % 40 km/h
+    v_min = 10; % 36 km/h
     v_max = 36.1; % 130km/h
 
     % STAND-BY -> OFF; ACTIVE -> OFF;
