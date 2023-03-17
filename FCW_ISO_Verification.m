@@ -59,7 +59,8 @@ function verification_status = FCW_ISO_Verification(fcw_result, distance, veloci
             % may provide less time for driver to maneuver car to safe 
             % state again
             distance_min_warning_iso = ((relative_velocity^2) / (2*(6.67 - deceleration_lead)) + 0.8 * relative_velocity);
-            if distance_min_warning_iso > fcw_warning_distance && fcw_result > 0
+            dist_delta_iso = 2; % in m
+            if (fcw_warning_distance < (distance_min_warning_iso - dist_delta_iso)) && fcw_result > 0
                 verification_status = 1;
                 return
             end
