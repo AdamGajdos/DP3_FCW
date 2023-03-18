@@ -149,6 +149,25 @@ classdef Custom_FCW_Algo < FCW_Algo
             d_w = Custom_FCW_Algo.define_warning_distance(velocity, relative_velocity, delay_driver, delay_system);
             d_br = Custom_FCW_Algo.define_critical_braking_distance(velocity, relative_velocity, road_type, road_condition, is_abs_on);
 
+            if d_w < d_br
+                tmp = d_w;
+                d_w = d_br;
+                d_br = tmp;
+            end
+
+            if(d_w < 0) && (d_br < 0)
+                d_w = Custom_FCW_Algo.Algorithm_Constants.d_0;
+                d_br = Custom_FCW_Algo.Algorithm_Constants.d_0 / 2;
+            elseif(d_br < 0)
+                d_br = d_w / 2;
+            else % d_w < 0
+                if d_br > Custom_FCW_Algo.Algorithm_Constants.d_0
+                    d_w = 1.5 * d_br; 
+                else
+                    d_w = 2 * d_br;
+                end
+            end
+
             warning_distance = d_w;
 
             if distance > d_w
@@ -158,6 +177,7 @@ classdef Custom_FCW_Algo < FCW_Algo
             else
                 sit_status = -1; %"Dangerous!";
             end
+
         end
 
     end
