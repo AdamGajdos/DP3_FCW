@@ -6,7 +6,7 @@ function [situation_status, fcw_warning_distance] = FCW_Matlab_Main(weight, area
     if run_all_algorithms == 0
 
         if fcw_algorithm == 0
-            [situation_status, fcw_warning_distance] = Berkeley_FCW_Algo.Resolve(velocity, relative_velocity, deceleration, distance, driver_delay);
+            [situation_status, fcw_warning_distance] = Berkeley_FCW_Algo.Resolve(velocity, relative_velocity, distance, driver_delay);
         elseif fcw_algorithm == 1
             [situation_status, fcw_warning_distance] = Custom_FCW_Algo.Resolve(velocity, relative_velocity,road_type, road_condition, is_abs_on, driver_delay, system_delay, distance);
         elseif fcw_algorithm == 2
