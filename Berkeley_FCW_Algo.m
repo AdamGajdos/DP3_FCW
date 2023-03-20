@@ -1,6 +1,20 @@
 classdef Berkeley_FCW_Algo < FCW_Algo
-    %BERKELEY_FCW_ALGO Summary of this class goes here
-    %   Detailed explanation goes here
+ %% Berkeley FCW Algorithm
+    % Algorithm developed at Berkeley University 
+    %   in 1998 doi: 10.2307/44741070.
+    %
+    % This algorithm computes warning distance "d_w" and crititical braking
+    %   distance "d_br". Then the actual distance from frontal obstacle is
+    %   compared to these distances. When distance < d_w then the warning
+    %   should be presented to driver. When distance < d_br then driver 
+    %   should start braking immidiately or automatic emergency brakes 
+    %   should be applied.
+    %
+    % Return values of this algorithms are as follows:
+    %   - (-1) algorithm evaluates actual situation as dangerous
+    %   - (0)  algorithm evaluates actual situation as driver should pay
+    %           bigger attention to road situation
+    %   - (1)  algorithm evaluates actual situation as safe
     
     properties(Constant, Access=private)
         Algorithm_Constants = Berkeley_FCW_Constants;

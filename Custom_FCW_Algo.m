@@ -1,6 +1,24 @@
 classdef Custom_FCW_Algo < FCW_Algo
-    %CUSTOM_FCW_ALGO Summary of this class goes here
-    %   Detailed explanation goes here
+    %% Our FCW Algorithm
+    % Algorithm developed as part of diploma thesis
+    %
+    % This algorithm computes warning distance "d_w" and crititical braking
+    %   distance "d_br". Then the actual distance from frontal obstacle is
+    %   compared to these distances. When distance < d_w then the warning
+    %   should be presented to driver. When distance < d_br then driver 
+    %   should start braking immidiately or automatic emergency brakes 
+    %   should be applied. 
+    % This algorithms approach is that when calculating d_w there are 
+    %   2 existing algorithm's which affects the final d_w by ratio 
+    %   defined by relative velocity (by weighted average). Same principle 
+    %   is used when calculating d_br with addition of applying braking
+    %   coefficient taking road conditions into account.
+    %
+    % Return values of this algorithms are as follows:
+    %   - (-1) algorithm evaluates actual situation as dangerous
+    %   - (0)  algorithm evaluates actual situation as driver should pay
+    %           bigger attention to road situation
+    %   - (1)  algorithm evaluates actual situation as safe
     
     properties(Constant, Access=private)
         Algorithm_Constants = Custom_FCW_Constants;

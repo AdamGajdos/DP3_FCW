@@ -1,6 +1,26 @@
 classdef TTC_FCW_Algo < FCW_Algo
-    %TTC_FCW_ALGO Summary of this class goes here
-    %   Detailed explanation goes here
+    %% Time-To-Collision FCW Algorithm
+    %  doi: 10.1109/ICIEA.2013.6566508.
+    %
+    % Calculates minimal (ds_min) and maximal(ds_max) safe braking distance
+    %   Then the distance between our and leading vehicle / frontal
+    %   obstacle is compare to ds_min and ds_max. In calculation the road
+    %   condition is also considered.
+    % After distance is compared to ds_min and ds_max the specific rule is
+    %   applied. These rules define the road situation criticality as
+    %   Danger levels. To unify FCW results with results of other 
+    %   implemented FCW algorithms the result mapping is as follows:
+    %    - Safe - situation status == 1
+    %    - Danger level 1,2 - driver should pay higher attention
+    %                       - situation status == 0
+    %    - Danger level 3 - the actual road situation is dangerous
+    %                     - situation status == -1
+    %
+    % Return values of this algorithms are as follows:
+    %   - (-1) algorithm evaluates actual situation as dangerous
+    %   - (0)  algorithm evaluates actual situation as driver should pay
+    %           bigger attention to road situation
+    %   - (1)  algorithm evaluates actual situation as safe
 
     properties (Constant, Access = private)
         Algorithm_Constants = TTC_FCW_Constants;

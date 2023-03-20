@@ -1,6 +1,12 @@
 function [situation_status, fcw_warning_distance] = FCW_Matlab_Main(weight, area, age, is_abs_on, driver_delay, system_delay, road_type, road_condition, fcw_algorithm, ...
     longitude, latitude, velocity, relative_velocity, deceleration, distance, steep, angle, run_all_algorithms)
-   
+    %% Main Script
+    %  Runs selected FCW algorithm
+    %  The implemented FCW algorithms are:
+    %   - Berkeley FCW Algorithm
+    %   - TTC FCW Algorithm
+    %   - Custom (Our) FCW Algorithm
+
     disp("Longitude: " + longitude + " ; Latitude: "  + latitude);
 
     if run_all_algorithms == 0
