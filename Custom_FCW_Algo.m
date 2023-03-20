@@ -156,8 +156,9 @@ classdef Custom_FCW_Algo < FCW_Algo
             end
 
             if(d_w < 0) && (d_br < 0)
-                d_w = Custom_FCW_Algo.Algorithm_Constants.d_0;
-                d_br = Custom_FCW_Algo.Algorithm_Constants.d_0 / 2;
+                d_w = Custom_FCW_Algo.Algorithm_Constants.d_0 * 2;
+                d_br = Custom_FCW_Algo.Algorithm_Constants.d_0;
+            
             elseif(d_br < 0)
                 d_br = d_w / 2;
             else % d_w < 0
