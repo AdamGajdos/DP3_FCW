@@ -23,7 +23,7 @@ function [situation_status, fcw_warning_distance, fcw_critical_braking_distance]
 
     else
         
-        [berkeley_situation_status, berkeley_fcw_warning_distance, berkeley_fcw_critical_braking_distance] = Berkeley_FCW_Algo.Resolve(velocity, relative_velocity, deceleration, distance, driver_delay);
+        [berkeley_situation_status, berkeley_fcw_warning_distance, berkeley_fcw_critical_braking_distance] = Berkeley_FCW_Algo.Resolve(velocity, relative_velocity, distance, driver_delay);
         [custom_situation_status, custom_fcw_warning_distance, custom_fcw_critical_braking_distance] = Custom_FCW_Algo.Resolve(velocity, relative_velocity,road_type, road_condition, is_abs_on, driver_delay, system_delay, distance);
         [ttc_situation_status, ttc_fcw_warning_distance, ttc_fcw_critical_braking_distance] = TTC_FCW_Algo.Resolve(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance);
         
