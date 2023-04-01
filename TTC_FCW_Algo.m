@@ -172,8 +172,8 @@ classdef TTC_FCW_Algo < FCW_Algo
         function [sit_status, warning_distance, critical_distance] = define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
             [ds_min, ds_max] = TTC_FCW_Algo.define_safety_braking_distance(velocity, age, area, steep, weight, angle, is_abs_on, road_type, road_condition);
             
-            warning_distance = ds_min;
-            critical_distance = ds_max;
+            warning_distance = ds_max;%ds_min;
+            critical_distance = ds_min;%ds_max;
             
             ttc = distance / velocity;
 
