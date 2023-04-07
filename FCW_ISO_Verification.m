@@ -1,13 +1,17 @@
 function verification_status = FCW_ISO_Verification(fcw_result, distance, velocity, relative_velocity, fcw_state, deceleration, min_distance, system_delay, deceleration_lead, fcw_warning_distance)
-     % Verification of FCW assistant result to selected ISO 15623:2013 
-     % requirements (we are considering only requirements supporting 
-     % situation evaluation by FCW assistant, thus we are not considering 
-     % image processing from camera, etc.)
+     %% Verification of FCW assistant result to selected ISO 15623:2013
+     % Requirements we are checking for compliance are only requirements 
+     % describing situation evaluation by FCW assistant, thus we are not 
+     % considering image processing from camera (object detection and 
+     % distance from obstacle calculation).
 
-     % Results, verification_status, values: 
-     %  0 - FCW result is in compliant with selected ISO requirements
-     %  1 - FCW result do not comply with selected ISO requirements
-     %  2 - FCW assistant has FAILED - wrong behavior/malfunction of assistant
+     %% Results, verification_status, values: 
+     %
+     % * 0 - FCW result is in compliant with selected ISO requirements
+     % 
+     % * 1 - FCW result do not comply with selected ISO requirements
+     % 
+     % * 2 - FCW assistant has FAILED - wrong behavior/malfunction of assistant
 
     verification_status = 0;
     

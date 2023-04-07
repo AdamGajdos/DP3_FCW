@@ -16,11 +16,14 @@ classdef TTC_FCW_Algo < FCW_Algo
     %    - Danger level 3 - the actual road situation is dangerous
     %                     - situation status == -1
     %
+    %% Return values
     % Return values of this algorithms are as follows:
-    %   - (-1) algorithm evaluates actual situation as dangerous
-    %   - (0)  algorithm evaluates actual situation as driver should pay
-    %           bigger attention to road situation
-    %   - (1)  algorithm evaluates actual situation as safe
+    %
+    % * (-1) algorithm evaluates actual situation as dangerous
+    % 
+    % * (0)  algorithm evaluates actual situation as driver should pay bigger attention to road situation
+    % 
+    % * (1)  algorithm evaluates actual situation as safe
 
     properties (Constant, Access = private)
         Algorithm_Constants = TTC_FCW_Constants;

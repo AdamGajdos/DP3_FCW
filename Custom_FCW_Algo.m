@@ -14,11 +14,14 @@ classdef Custom_FCW_Algo < FCW_Algo
     %   is used when calculating d_br with addition of applying braking
     %   coefficient taking road conditions into account.
     %
+    %% Return values
     % Return values of this algorithms are as follows:
-    %   - (-1) algorithm evaluates actual situation as dangerous
-    %   - (0)  algorithm evaluates actual situation as driver should pay
-    %           bigger attention to road situation
-    %   - (1)  algorithm evaluates actual situation as safe
+    %
+    % * (-1) algorithm evaluates actual situation as dangerous
+    % 
+    % * (0)  algorithm evaluates actual situation as driver should pay bigger attention to road situation
+    % 
+    % * (1)  algorithm evaluates actual situation as safe
     
     properties(Constant, Access=private)
         Algorithm_Constants = Custom_FCW_Constants;

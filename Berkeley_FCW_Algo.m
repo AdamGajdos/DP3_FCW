@@ -10,11 +10,14 @@ classdef Berkeley_FCW_Algo < FCW_Algo
     %   should start braking immidiately or automatic emergency brakes 
     %   should be applied.
     %
+    %% Return values
     % Return values of this algorithms are as follows:
-    %   - (-1) algorithm evaluates actual situation as dangerous
-    %   - (0)  algorithm evaluates actual situation as driver should pay
-    %           bigger attention to road situation
-    %   - (1)  algorithm evaluates actual situation as safe
+    %
+    % * (-1) algorithm evaluates actual situation as dangerous
+    % 
+    % * (0)  algorithm evaluates actual situation as driver should pay bigger attention to road situation
+    % 
+    % * (1)  algorithm evaluates actual situation as safe
     
     properties(Constant, Access=private)
         Algorithm_Constants = Berkeley_FCW_Constants;

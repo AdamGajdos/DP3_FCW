@@ -1,0 +1,239 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>FCW_ISO_Verification</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-04-06"><meta name="DC.source" content="FCW_ISO_Verification.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Verification of FCW assistant result to selected ISO 15623:2013</a></li><li><a href="#3">Results, verification_status, values:</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> verification_status = FCW_ISO_Verification(fcw_result, distance, velocity, relative_velocity, fcw_state, deceleration, min_distance, system_delay, deceleration_lead, fcw_warning_distance)
+</pre><h2 id="2">Verification of FCW assistant result to selected ISO 15623:2013</h2><p>Requirements we are checking for compliance are only requirements describing situation evaluation by FCW assistant, thus we are not considering image processing from camera (object detection and distance from obstacle calculation).</p><h2 id="3">Results, verification_status, values:</h2><div><ul><li>0 - FCW result is in compliant with selected ISO requirements</li></ul></div><div><ul><li>1 - FCW result do not comply with selected ISO requirements</li></ul></div><div><ul><li>2 - FCW assistant has FAILED - wrong behavior/malfunction of assistant</li></ul></div><pre class="codeinput">    verification_status = 0;
+
+    <span class="keyword">if</span> fcw_result &lt; 2
+        <span class="keyword">if</span> fcw_state ~= 1 <span class="comment">% only FCW ACTIVE should evaluate situation</span>
+            verification_status = 2;
+
+        <span class="keyword">else</span>
+            distance_clearence_reduction = system_delay * velocity;  <span class="comment">% system_delay * velocity -&gt; distance traveled from brake pedal push to braking start</span>
+
+            dec_req = deceleration_lead + (relative_velocity^2 / ( 2 * (distance - distance_clearence_reduction)));
+
+            dec_req_tresh_hold = 0.68 * 9.81;
+
+            min_distance_delta = 0.5; <span class="comment">% in m</span>
+
+            ttc_tresh_hold = 4; <span class="comment">% in s</span>
+
+            <span class="comment">% Situation when deceleration is sufficient. FCW should not trigger</span>
+            <span class="comment">% ATTENTION or WARNING/DANGER</span>
+            <span class="keyword">if</span> (deceleration &gt;= dec_req) &amp;&amp; fcw_result &lt; 1 <span class="comment">% when FCW result -  ATTENTION or WARNING/DANGER</span>
+               verification_status = 1;
+               <span class="keyword">return</span>
+            <span class="keyword">end</span>
+
+            <span class="comment">% Situation when deceleration is not sufficient. FCW should trigger</span>
+            <span class="comment">% ATTENTION or WARNING.</span>
+            <span class="keyword">if</span> (dec_req &gt; dec_req_tresh_hold) &amp;&amp; fcw_result &gt; 0 <span class="comment">% when FCW result -  SAFE</span>
+               verification_status = 1;
+               <span class="keyword">return</span>
+            <span class="keyword">end</span>
+
+            <span class="comment">% Situation when leading vehicle is about to card to our driving lane.</span>
+            <span class="comment">% Assuming that direction signal is ON. Vehicle should not trigger</span>
+            <span class="comment">% warning</span>
+            <span class="keyword">if</span> (relative_velocity - velocity) &gt; velocity &amp;&amp; distance &gt;= (min_distance - min_distance_delta) &amp;&amp; distance &lt;= (min_distance + min_distance_delta) &amp;&amp; fcw_result &lt; 1 <span class="comment">% when FCW result is ATTENTION or WARNING/DANGER</span>
+                verification_status = 1;
+                <span class="keyword">return</span>
+            <span class="keyword">end</span>
+
+            <span class="comment">% Situation when there should be enough time to react. FCW should not</span>
+            <span class="comment">% trigger warning</span>
+            TTC = velocity / distance;
+            <span class="keyword">if</span> TTC &gt; ttc_tresh_hold &amp;&amp; fcw_result &lt; 1 <span class="comment">% when FCW result is ATTENTION or WARNING/DANGER</span>
+                verification_status = 1;
+                <span class="keyword">return</span>
+            <span class="keyword">end</span>
+
+            <span class="comment">% If warning distance computed by FCW algorithm is less than</span>
+            <span class="comment">% minimal expected warning distance by ISO 15623:2013 then it</span>
+            <span class="comment">% may provide less time for driver to maneuver car to safe</span>
+            <span class="comment">% state again</span>
+            distance_min_warning_iso = ((relative_velocity^2) / (2*(6.67 - deceleration_lead)) + 0.8 * relative_velocity);
+            dist_delta_iso = 2; <span class="comment">% in m</span>
+            <span class="keyword">if</span> (fcw_warning_distance &lt; (distance_min_warning_iso - dist_delta_iso)) &amp;&amp; fcw_result &gt; 0
+                verification_status = 1;
+                <span class="keyword">return</span>
+            <span class="keyword">end</span>
+
+            <span class="comment">% If warning distance is computed as less than min_distance</span>
+            <span class="comment">% then there is great probability the FCW assistant is</span>
+            <span class="comment">% malfunctioning</span>
+            <span class="keyword">if</span> fcw_warning_distance &lt;= min_distance
+                verification_status = 2;
+                <span class="keyword">return</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+    <span class="keyword">else</span>
+        <span class="keyword">if</span> fcw_state == 1 <span class="comment">% when FCW ACTIVE then it should evaluate situation</span>
+            verification_status = 2;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+</pre><pre class="codeoutput error">Not enough input arguments.
+
+Error in FCW_ISO_Verification (line 18)
+    if fcw_result &lt; 2
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function verification_status = FCW_ISO_Verification(fcw_result, distance, velocity, relative_velocity, fcw_state, deceleration, min_distance, system_delay, deceleration_lead, fcw_warning_distance)
+     %% Verification of FCW assistant result to selected ISO 15623:2013
+     % Requirements we are checking for compliance are only requirements 
+     % describing situation evaluation by FCW assistant, thus we are not 
+     % considering image processing from camera (object detection and 
+     % distance from obstacle calculation).
+
+     %% Results, verification_status, values: 
+     %
+     % * 0 - FCW result is in compliant with selected ISO requirements
+     % 
+     % * 1 - FCW result do not comply with selected ISO requirements
+     % 
+     % * 2 - FCW assistant has FAILED - wrong behavior/malfunction of assistant
+
+    verification_status = 0;
+    
+    if fcw_result < 2
+        if fcw_state ~= 1 % only FCW ACTIVE should evaluate situation
+            verification_status = 2;
+        
+        else
+            distance_clearence_reduction = system_delay * velocity;  % system_delay * velocity -> distance traveled from brake pedal push to braking start
+   
+            dec_req = deceleration_lead + (relative_velocity^2 / ( 2 * (distance - distance_clearence_reduction)));
+        
+            dec_req_tresh_hold = 0.68 * 9.81;
+        
+            min_distance_delta = 0.5; % in m
+    
+            ttc_tresh_hold = 4; % in s
+        
+            % Situation when deceleration is sufficient. FCW should not trigger
+            % ATTENTION or WARNING/DANGER
+            if (deceleration >= dec_req) && fcw_result < 1 % when FCW result -  ATTENTION or WARNING/DANGER
+               verification_status = 1;
+               return
+            end
+        
+            % Situation when deceleration is not sufficient. FCW should trigger
+            % ATTENTION or WARNING.
+            if (dec_req > dec_req_tresh_hold) && fcw_result > 0 % when FCW result -  SAFE
+               verification_status = 1;
+               return
+            end
+        
+            % Situation when leading vehicle is about to card to our driving lane. 
+            % Assuming that direction signal is ON. Vehicle should not trigger
+            % warning
+            if (relative_velocity - velocity) > velocity && distance >= (min_distance - min_distance_delta) && distance <= (min_distance + min_distance_delta) && fcw_result < 1 % when FCW result is ATTENTION or WARNING/DANGER
+                verification_status = 1;
+                return
+            end
+        
+            % Situation when there should be enough time to react. FCW should not
+            % trigger warning
+            TTC = velocity / distance;
+            if TTC > ttc_tresh_hold && fcw_result < 1 % when FCW result is ATTENTION or WARNING/DANGER
+                verification_status = 1;
+                return
+            end
+
+            % If warning distance computed by FCW algorithm is less than
+            % minimal expected warning distance by ISO 15623:2013 then it
+            % may provide less time for driver to maneuver car to safe 
+            % state again
+            distance_min_warning_iso = ((relative_velocity^2) / (2*(6.67 - deceleration_lead)) + 0.8 * relative_velocity);
+            dist_delta_iso = 2; % in m
+            if (fcw_warning_distance < (distance_min_warning_iso - dist_delta_iso)) && fcw_result > 0
+                verification_status = 1;
+                return
+            end
+
+            % If warning distance is computed as less than min_distance
+            % then there is great probability the FCW assistant is 
+            % malfunctioning
+            if fcw_warning_distance <= min_distance
+                verification_status = 2;
+                return
+            end
+        end
+
+    else
+        if fcw_state == 1 % when FCW ACTIVE then it should evaluate situation
+            verification_status = 2;
+        end
+    end
+end
+##### SOURCE END #####
+--></body></html>

@@ -1,13 +1,29 @@
 function [situation_status, fcw_warning_distance, fcw_critical_braking_distance] = FCW_Matlab_Main(weight, area, age, is_abs_on, driver_delay, system_delay, road_type, road_condition, fcw_algorithm, ...
     longitude, latitude, velocity, relative_velocity, deceleration, distance, steep, angle, run_all_algorithms)
-    %% Main Script
-    %  Runs selected FCW algorithm
-    %  The implemented FCW algorithms are:
-    %   - Berkeley FCW Algorithm
-    %   - TTC FCW Algorithm
-    %   - Custom (Our) FCW Algorithm
-
-    disp("Longitude: " + longitude + " ; Latitude: "  + latitude);
+    %% Main Script for Simulink Model
+    % This represents FCW asistant, which can run multiple FCW algorithms
+    %  At the time of creation of this toolbox, the implemented FCW 
+    %  algorithms are:
+    %  * Berkeley FCW Algorithm
+    %  * TTC FCW Algorithm
+    %  * Custom (Our) FCW Algorithm
+    %
+    %% Return values
+    % The return values of this script are:
+    %
+    % * situation_status - represents result of FCW Assistant.
+    %
+    % * fcw_warning_distance - calculated warning distance in m. Represents the distance after which driver should pay higher attention to road situation.
+    %
+    % * fcw_critical_braking_distance - calculated critical braking distance in m. Represents the distance after which driver should start immediately.
+    %% Mapping for situation status
+    % Mapping for statuses is:
+    %
+    % * -1 for Dangerous situation
+    %
+    % * 0 for Pay higher attention 
+    %
+    % * 1 for Safe situation
 
     if run_all_algorithms == 0
 

@@ -1,8 +1,8 @@
 function fcw_status = FCW_Assistant_Status(is_fcw_on, velocity, gear)
-    % Serves to determine the state in which FCW assistant is at the moment
-    % fcw_status = -1 ... STATUS OFF
-    % fcw_status =  0 ... STATUS STAND-BY
-    % fcw_status =  1 ... STATUS ACTIVE
+    %% Serves to determine the state in which FCW assistant is at the moment
+    % * -1 for STATUS OFF
+    % * 0 for STATUS STAND-BY
+    % * 1 for STATUS ACTIVE
     
     v_min = 10; % 36 km/h
     v_max = 36.1; % 130km/h
