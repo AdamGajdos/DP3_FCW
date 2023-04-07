@@ -1,0 +1,470 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TTC_FCW_Algo</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-04-06"><meta name="DC.source" content="TTC_FCW_Algo.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Time-To-Collision FCW Algorithm</a></li><li><a href="#3">Return values</a></li></ul></div><pre class="codeinput"><span class="keyword">classdef</span> TTC_FCW_Algo &lt; FCW_Algo
+</pre><h2 id="2">Time-To-Collision FCW Algorithm</h2><pre>doi: 10.1109/ICIEA.2013.6566508.</pre><p>Calculates minimal (ds_min) and maximal(ds_max) safe braking distance   Then the distance between our and leading vehicle / frontal   obstacle is compare to ds_min and ds_max. In calculation the road   condition is also considered. After distance is compared to ds_min and ds_max the specific rule is   applied. These rules define the road situation criticality as   Danger levels. To unify FCW results with results of other   implemented FCW algorithms the result mapping is as follows:    - Safe - situation status == 1    - Danger level 1,2 - driver should pay higher attention                       - situation status == 0    - Danger level 3 - the actual road situation is dangerous                     - situation status == -1</p><h2 id="3">Return values</h2><p>Return values of this algorithms are as follows:</p><div><ul><li>(-1) algorithm evaluates actual situation as dangerous</li></ul></div><div><ul><li>(0)  algorithm evaluates actual situation as driver should pay bigger attention to road situation</li></ul></div><div><ul><li>(1)  algorithm evaluates actual situation as safe</li></ul></div><pre class="codeinput">    properties (Constant, Access = private)
+        Algorithm_Constants = TTC_FCW_Constants;
+    <span class="keyword">end</span>
+
+    methods
+        <span class="keyword">function</span> obj = TTC_FCW_Algo()
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    methods(Static, Access = private)
+        <span class="keyword">function</span> d_br = define_braking_distance(brake_efficiency, road_adhesion, area, steep, weight, angle, velocity)
+            c_ae = (TTC_FCW_Algo.Algorithm_Constants.air_density * area * TTC_FCW_Algo.Algorithm_Constants.aerodynamic_resistance_coefficient) / 2;
+
+            sign = 1;
+            <span class="keyword">if</span> steep == Road_Steep.DOWNHILL
+                sign = -1;
+            <span class="keyword">end</span>
+
+            d_br = (TTC_FCW_Algo.Algorithm_Constants.equivalent_mass_coefficient * weight) / (2*TTC_FCW_Algo.Algorithm_Constants.g*c_ae);
+
+            d_br = d_br * log2(abs(1 + (c_ae * velocity ^ 2) / (brake_efficiency * (road_adhesion + TTC_FCW_Algo.Algorithm_Constants.rolling_resistance_coefficient) * weight * cos(angle) + sign * weight * sin(angle))));
+        <span class="keyword">end</span>
+
+        <span class="keyword">function</span> [d_s_min, d_s_max] = define_safety_braking_distance(velocity, age, area, steep, weight, angle, is_abs_on, road_type, road_condition)
+
+            [road_adhesion_min, road_adhesion_max] = TTC_FCW_Algo.set_adhesion_vars(is_abs_on, road_type, road_condition);
+
+            d_b_min = TTC_FCW_Algo.define_braking_distance(TTC_FCW_Algo.Algorithm_Constants.brake_eff_min, road_adhesion_min, area, steep, weight, angle, velocity);
+
+            d_b_max = TTC_FCW_Algo.define_braking_distance(TTC_FCW_Algo.Algorithm_Constants.brake_eff_max, road_adhesion_max, area, steep, weight, angle, velocity);
+
+            [t_r_min, t_r_max] = TTC_FCW_Algo.set_driver_vars(age);
+            d_r_min = t_r_min * velocity;
+            d_r_max = t_r_max * velocity;
+
+            d_p_min = TTC_FCW_Algo.Algorithm_Constants.t_p_min * velocity;
+            d_p_max = TTC_FCW_Algo.Algorithm_Constants.t_p_max * velocity;
+
+            d_s_min = d_b_min + d_r_min + d_p_min;
+            d_s_max = d_b_max + d_r_max + d_p_max;
+        <span class="keyword">end</span>
+
+        <span class="keyword">function</span> [t_r_min, t_r_max] = set_driver_vars(age)
+            <span class="keyword">if</span> age &gt;= 18 &amp;&amp; age &lt;= 33
+                t_r_min = 0.74;
+                t_r_max = 1.1;
+            <span class="keyword">elseif</span> age &gt;= 34 &amp;&amp; age &lt;= 47
+                t_r_min = 0.75;
+                t_r_max = 1.12;
+            <span class="keyword">elseif</span> age &gt;= 48 &amp;&amp; age &lt;= 57
+                t_r_min = 0.77;
+                t_r_max = 1.13;
+            <span class="keyword">elseif</span> age &gt;= 58 &amp;&amp; age &lt;= 70
+                t_r_min = 0.78;
+                t_r_max = 1.17;
+            <span class="keyword">else</span>
+                t_r_min = 0.8;
+                t_r_max = 1.2;
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        <span class="keyword">function</span> [road_adhesion_min, road_adhesion_max] = set_adhesion_vars(is_abs_on, road_type, road_condition)
+            road_adhesion_min = 1;
+            road_adhesion_max = 1;
+
+            <span class="keyword">if</span> is_abs_on == 1
+                <span class="keyword">if</span> road_type == Road_Type.ASPHALT
+                    <span class="keyword">if</span> road_condition == Road_Condition.DRY
+                        road_adhesion_min = 0.8;
+                        road_adhesion_max = 0.9;
+                    <span class="keyword">elseif</span> road_condition == Road_Condition.WET
+                        road_adhesion_min = 0.5;
+                        road_adhesion_max = 0.7;
+                    <span class="keyword">end</span>
+
+                <span class="keyword">elseif</span> road_type == Road_Type.CONCRETE
+                    <span class="keyword">if</span> road_condition == Road_Condition.DRY
+                        road_adhesion_min = 0.8;
+                        road_adhesion_max = 0.9;
+                    <span class="keyword">elseif</span> road_condition == Road_Condition.WET
+                        road_adhesion_min = 0.8;
+                        road_adhesion_max = 0.8;
+                    <span class="keyword">end</span>
+
+                <span class="keyword">elseif</span> road_type == Road_Type.SNOW
+                    road_adhesion_min = 0.2;
+                    road_adhesion_max = 0.2;
+
+                <span class="keyword">elseif</span> road_type == Road_Type.ICE
+                    road_adhesion_min = 0.1;
+                    road_adhesion_max = 0.1;
+                <span class="keyword">end</span>
+
+            <span class="keyword">else</span>
+                <span class="keyword">if</span> road_type == Road_Type.ASPHALT
+                    <span class="keyword">if</span> road_condition == Road_Condition.DRY
+                        road_adhesion_min = 0.75;
+                        road_adhesion_max = 0.75;
+                    <span class="keyword">elseif</span> road_condition == Road_Condition.WET
+                        road_adhesion_min = 0.45;
+                        road_adhesion_max = 0.6;
+                    <span class="keyword">end</span>
+                <span class="keyword">elseif</span> road_type == Road_Type.CONCRETE
+                    <span class="keyword">if</span> road_condition == Road_Condition.DRY
+                        road_adhesion_min = 0.75;
+                        road_adhesion_max = 0.75;
+                    <span class="keyword">elseif</span> road_condition == Road_Condition.WET
+                        road_adhesion_min = 0.7;
+                        road_adhesion_max = 0.7;
+                    <span class="keyword">end</span>
+                <span class="keyword">elseif</span> road_type == Road_Type.SNOW
+                    road_adhesion_min = 0.15;
+                    road_adhesion_max = 0.15;
+
+                <span class="keyword">elseif</span> road_type == Road_Type.ICE
+                    road_adhesion_min = 0.07;
+                    road_adhesion_max = 0.07;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        <span class="keyword">function</span> rule_to_apply = apply_rule(rule, ttc, velocity)
+            rule_to_apply = <span class="string">"Safe"</span>;
+
+            <span class="keyword">if</span> rule == 1
+                <span class="keyword">if</span> ttc &lt; TTC_FCW_Algo.Algorithm_Constants.critical_ttc
+                    rule_to_apply = <span class="string">"Danger Level 3"</span>;
+                <span class="keyword">else</span>
+                    <span class="keyword">if</span> velocity &gt; 0
+                        rule_to_apply = <span class="string">"Danger Level 1"</span>;
+                    <span class="keyword">else</span>
+                        rule_to_apply = <span class="string">"Danger Level 2"</span>;
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">elseif</span> rule == 2
+                <span class="keyword">if</span> ttc &lt; TTC_FCW_Algo.Algorithm_Constants.critical_ttc
+                    rule_to_apply = <span class="string">"Danger Level 2"</span>;
+                <span class="keyword">else</span>
+                    <span class="keyword">if</span> velocity &gt; 0
+                        rule_to_apply = <span class="string">"Safe"</span>;
+                    <span class="keyword">else</span>
+                        rule_to_apply = <span class="string">"Danger Level 1"</span>;
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        <span class="keyword">function</span> [sit_status, warning_distance, critical_distance] = define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
+            [ds_min, ds_max] = TTC_FCW_Algo.define_safety_braking_distance(velocity, age, area, steep, weight, angle, is_abs_on, road_type, road_condition);
+
+            warning_distance = ds_max;<span class="comment">%ds_min;</span>
+            critical_distance = ds_min;<span class="comment">%ds_max;</span>
+
+            ttc = distance / velocity;
+
+            <span class="keyword">if</span> distance &lt; ds_min
+                sit_status = TTC_FCW_Algo.apply_rule(1, ttc, velocity);
+            <span class="keyword">elseif</span> distance &lt; ds_max
+                sit_status = TTC_FCW_Algo.apply_rule(2, ttc, velocity);
+            <span class="keyword">else</span>
+                sit_status = <span class="string">"Safe"</span>;
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+
+    methods (Static, Access = public)
+        <span class="keyword">function</span> [situation_status, warning_distance, critical_distance] = Resolve(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
+
+            [tmp_situation_status, warning_distance, critical_distance] = TTC_FCW_Algo.define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance);
+
+            <span class="keyword">if</span> tmp_situation_status == <span class="string">"Safe"</span>
+                situation_status = 1;
+            <span class="keyword">elseif</span> tmp_situation_status == <span class="string">"Danger Level 1"</span> || tmp_situation_status == <span class="string">"Danger Level 2"</span>
+                situation_status = 0;   <span class="comment">% Attention</span>
+            <span class="keyword">else</span>
+                situation_status = -1;  <span class="comment">% Dangerous</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+</pre><pre class="codeoutput">
+ans = 
+
+  TTC_FCW_Algo with no properties.
+
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+classdef TTC_FCW_Algo < FCW_Algo
+    %% Time-To-Collision FCW Algorithm
+    %  doi: 10.1109/ICIEA.2013.6566508.
+    %
+    % Calculates minimal (ds_min) and maximal(ds_max) safe braking distance
+    %   Then the distance between our and leading vehicle / frontal
+    %   obstacle is compare to ds_min and ds_max. In calculation the road
+    %   condition is also considered.
+    % After distance is compared to ds_min and ds_max the specific rule is
+    %   applied. These rules define the road situation criticality as
+    %   Danger levels. To unify FCW results with results of other 
+    %   implemented FCW algorithms the result mapping is as follows:
+    %    - Safe - situation status == 1
+    %    - Danger level 1,2 - driver should pay higher attention
+    %                       - situation status == 0
+    %    - Danger level 3 - the actual road situation is dangerous
+    %                     - situation status == -1
+    %
+    %% Return values
+    % Return values of this algorithms are as follows:
+    %
+    % * (-1) algorithm evaluates actual situation as dangerous
+    % 
+    % * (0)  algorithm evaluates actual situation as driver should pay bigger attention to road situation
+    % 
+    % * (1)  algorithm evaluates actual situation as safe
+
+    properties (Constant, Access = private)
+        Algorithm_Constants = TTC_FCW_Constants;
+    end
+    
+    methods
+        function obj = TTC_FCW_Algo()
+        end
+    end
+
+    methods(Static, Access = private)
+        function d_br = define_braking_distance(brake_efficiency, road_adhesion, area, steep, weight, angle, velocity)
+            c_ae = (TTC_FCW_Algo.Algorithm_Constants.air_density * area * TTC_FCW_Algo.Algorithm_Constants.aerodynamic_resistance_coefficient) / 2;
+
+            sign = 1;
+            if steep == Road_Steep.DOWNHILL
+                sign = -1;
+            end
+            
+            d_br = (TTC_FCW_Algo.Algorithm_Constants.equivalent_mass_coefficient * weight) / (2*TTC_FCW_Algo.Algorithm_Constants.g*c_ae);
+
+            d_br = d_br * log2(abs(1 + (c_ae * velocity ^ 2) / (brake_efficiency * (road_adhesion + TTC_FCW_Algo.Algorithm_Constants.rolling_resistance_coefficient) * weight * cos(angle) + sign * weight * sin(angle))));
+        end
+
+        function [d_s_min, d_s_max] = define_safety_braking_distance(velocity, age, area, steep, weight, angle, is_abs_on, road_type, road_condition)
+            
+            [road_adhesion_min, road_adhesion_max] = TTC_FCW_Algo.set_adhesion_vars(is_abs_on, road_type, road_condition);
+
+            d_b_min = TTC_FCW_Algo.define_braking_distance(TTC_FCW_Algo.Algorithm_Constants.brake_eff_min, road_adhesion_min, area, steep, weight, angle, velocity);
+
+            d_b_max = TTC_FCW_Algo.define_braking_distance(TTC_FCW_Algo.Algorithm_Constants.brake_eff_max, road_adhesion_max, area, steep, weight, angle, velocity);
+
+            [t_r_min, t_r_max] = TTC_FCW_Algo.set_driver_vars(age);
+            d_r_min = t_r_min * velocity;
+            d_r_max = t_r_max * velocity;
+
+            d_p_min = TTC_FCW_Algo.Algorithm_Constants.t_p_min * velocity;
+            d_p_max = TTC_FCW_Algo.Algorithm_Constants.t_p_max * velocity;
+
+            d_s_min = d_b_min + d_r_min + d_p_min;
+            d_s_max = d_b_max + d_r_max + d_p_max;
+        end
+
+        function [t_r_min, t_r_max] = set_driver_vars(age)
+            if age >= 18 && age <= 33
+                t_r_min = 0.74;
+                t_r_max = 1.1;
+            elseif age >= 34 && age <= 47
+                t_r_min = 0.75;
+                t_r_max = 1.12;
+            elseif age >= 48 && age <= 57
+                t_r_min = 0.77;
+                t_r_max = 1.13;
+            elseif age >= 58 && age <= 70
+                t_r_min = 0.78;
+                t_r_max = 1.17;
+            else
+                t_r_min = 0.8;
+                t_r_max = 1.2;
+            end
+        end
+
+        function [road_adhesion_min, road_adhesion_max] = set_adhesion_vars(is_abs_on, road_type, road_condition)
+            road_adhesion_min = 1;
+            road_adhesion_max = 1;
+
+            if is_abs_on == 1
+                if road_type == Road_Type.ASPHALT
+                    if road_condition == Road_Condition.DRY
+                        road_adhesion_min = 0.8;
+                        road_adhesion_max = 0.9;
+                    elseif road_condition == Road_Condition.WET
+                        road_adhesion_min = 0.5;
+                        road_adhesion_max = 0.7;
+                    end
+                
+                elseif road_type == Road_Type.CONCRETE
+                    if road_condition == Road_Condition.DRY
+                        road_adhesion_min = 0.8;
+                        road_adhesion_max = 0.9;
+                    elseif road_condition == Road_Condition.WET
+                        road_adhesion_min = 0.8;
+                        road_adhesion_max = 0.8;
+                    end
+                
+                elseif road_type == Road_Type.SNOW
+                    road_adhesion_min = 0.2;
+                    road_adhesion_max = 0.2;
+                
+                elseif road_type == Road_Type.ICE
+                    road_adhesion_min = 0.1;
+                    road_adhesion_max = 0.1;
+                end
+
+            else
+                if road_type == Road_Type.ASPHALT
+                    if road_condition == Road_Condition.DRY
+                        road_adhesion_min = 0.75;
+                        road_adhesion_max = 0.75;
+                    elseif road_condition == Road_Condition.WET
+                        road_adhesion_min = 0.45;
+                        road_adhesion_max = 0.6;
+                    end
+                elseif road_type == Road_Type.CONCRETE
+                    if road_condition == Road_Condition.DRY
+                        road_adhesion_min = 0.75;
+                        road_adhesion_max = 0.75;
+                    elseif road_condition == Road_Condition.WET
+                        road_adhesion_min = 0.7;
+                        road_adhesion_max = 0.7;
+                    end
+                elseif road_type == Road_Type.SNOW
+                    road_adhesion_min = 0.15;
+                    road_adhesion_max = 0.15;
+               
+                elseif road_type == Road_Type.ICE
+                    road_adhesion_min = 0.07;
+                    road_adhesion_max = 0.07;
+                end
+            end
+        end
+
+        function rule_to_apply = apply_rule(rule, ttc, velocity)
+            rule_to_apply = "Safe";
+
+            if rule == 1
+                if ttc < TTC_FCW_Algo.Algorithm_Constants.critical_ttc
+                    rule_to_apply = "Danger Level 3";
+                else
+                    if velocity > 0
+                        rule_to_apply = "Danger Level 1";
+                    else
+                        rule_to_apply = "Danger Level 2";
+                    end
+                end
+            elseif rule == 2
+                if ttc < TTC_FCW_Algo.Algorithm_Constants.critical_ttc
+                    rule_to_apply = "Danger Level 2";
+                else
+                    if velocity > 0
+                        rule_to_apply = "Safe";
+                    else
+                        rule_to_apply = "Danger Level 1";
+                    end
+                end
+            end
+        end
+
+        function [sit_status, warning_distance, critical_distance] = define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
+            [ds_min, ds_max] = TTC_FCW_Algo.define_safety_braking_distance(velocity, age, area, steep, weight, angle, is_abs_on, road_type, road_condition);
+            
+            warning_distance = ds_max;%ds_min;
+            critical_distance = ds_min;%ds_max;
+            
+            ttc = distance / velocity;
+
+            if distance < ds_min
+                sit_status = TTC_FCW_Algo.apply_rule(1, ttc, velocity);
+            elseif distance < ds_max
+                sit_status = TTC_FCW_Algo.apply_rule(2, ttc, velocity);
+            else
+                sit_status = "Safe";
+            end
+        end
+
+    end
+
+    methods (Static, Access = public)
+        function [situation_status, warning_distance, critical_distance] = Resolve(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
+            
+            [tmp_situation_status, warning_distance, critical_distance] = TTC_FCW_Algo.define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance);
+            
+            if tmp_situation_status == "Safe"
+                situation_status = 1;
+            elseif tmp_situation_status == "Danger Level 1" || tmp_situation_status == "Danger Level 2"
+                situation_status = 0;   % Attention
+            else
+                situation_status = -1;  % Dangerous
+            end
+        end
+    end
+end
+
+
+##### SOURCE END #####
+--></body></html>

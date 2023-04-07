@@ -1,6 +1,27 @@
 classdef Custom_FCW_Algo < FCW_Algo
-    %CUSTOM_FCW_ALGO Summary of this class goes here
-    %   Detailed explanation goes here
+    %% Our FCW Algorithm
+    % Algorithm developed as part of diploma thesis
+    %
+    % This algorithm computes warning distance "d_w" and crititical braking
+    %   distance "d_br". Then the actual distance from frontal obstacle is
+    %   compared to these distances. When distance < d_w then the warning
+    %   should be presented to driver. When distance < d_br then driver 
+    %   should start braking immidiately or automatic emergency brakes 
+    %   should be applied. 
+    % This algorithms approach is that when calculating d_w there are 
+    %   2 existing algorithm's which affects the final d_w by ratio 
+    %   defined by relative velocity (by weighted average). Same principle 
+    %   is used when calculating d_br with addition of applying braking
+    %   coefficient taking road conditions into account.
+    %
+    %% Return values
+    % Return values of this algorithms are as follows:
+    %
+    % * (-1) algorithm evaluates actual situation as dangerous
+    % 
+    % * (0)  algorithm evaluates actual situation as driver should pay bigger attention to road situation
+    % 
+    % * (1)  algorithm evaluates actual situation as safe
     
     properties(Constant, Access=private)
         Algorithm_Constants = Custom_FCW_Constants;
@@ -145,9 +166,39 @@ classdef Custom_FCW_Algo < FCW_Algo
             d_br = Custom_FCW_Algo.count_weighted_avg(relative_velocity, d_br1, d_br2) * Custom_FCW_Algo.define_friction_coef(is_abs_on, road_type,road_condition);
         end
 
-        function sit_status = define_danger(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance)
+        function [sit_status, warning_distance, critical_distance] = define_danger(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance)
             d_w = Custom_FCW_Algo.define_warning_distance(velocity, relative_velocity, delay_driver, delay_system);
             d_br = Custom_FCW_Algo.define_critical_braking_distance(velocity, relative_velocity, road_type, road_condition, is_abs_on);
+
+            if d_w < d_br
+                tmp = d_w;
+                d_w = d_br;
+                d_br = tmp;
+            end 
+
+            if(d_w < 0) && (d_br < 0)
+                d_w = Custom_FCW_Algo.Algorithm_Constants.d_0 * 2;
+                d_br = Custom_FCW_Algo.Algorithm_Constants.d_0;
+            
+            elseif(d_br < 0)
+                if d_w > (2 * Custom_FCW_Algo.Algorithm_Constants.d_0)
+                    d_br = d_w / 2;
+                else
+                    d_br = Custom_FCW_Algo.Algorithm_Constants.d_0;
+                    d_w = 2 * Custom_FCW_Algo.Algorithm_Constants.d_0;
+                end                
+            end
+            
+            if d_br < Custom_FCW_Algo.Algorithm_Constants.d_0
+                d_br = Custom_FCW_Algo.Algorithm_Constants.d_0;
+            end
+
+            if d_w < Custom_FCW_Algo.Algorithm_Constants.d_0 * 2
+                d_w = Custom_FCW_Algo.Algorithm_Constants.d_0*2;
+            end
+
+            warning_distance = d_w;
+            critical_distance = d_br;
 
             if distance > d_w
                 sit_status = 1; %"Safe";
@@ -156,13 +207,14 @@ classdef Custom_FCW_Algo < FCW_Algo
             else
                 sit_status = -1; %"Dangerous!";
             end
+
         end
 
     end
 
     methods(Static, Access = public)
-        function situation_status = Resolve(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance)
-            situation_status = Custom_FCW_Algo.define_danger(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance);
+        function [situation_status, warning_distance, critical_distance] = Resolve(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance)
+            [situation_status, warning_distance, critical_distance] = Custom_FCW_Algo.define_danger(velocity, relative_velocity, road_type, road_condition, is_abs_on, delay_driver, delay_system, distance);
         end
     end
 end

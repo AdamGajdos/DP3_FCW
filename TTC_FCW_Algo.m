@@ -1,6 +1,29 @@
 classdef TTC_FCW_Algo < FCW_Algo
-    %TTC_FCW_ALGO Summary of this class goes here
-    %   Detailed explanation goes here
+    %% Time-To-Collision FCW Algorithm
+    %  doi: 10.1109/ICIEA.2013.6566508.
+    %
+    % Calculates minimal (ds_min) and maximal(ds_max) safe braking distance
+    %   Then the distance between our and leading vehicle / frontal
+    %   obstacle is compare to ds_min and ds_max. In calculation the road
+    %   condition is also considered.
+    % After distance is compared to ds_min and ds_max the specific rule is
+    %   applied. These rules define the road situation criticality as
+    %   Danger levels. To unify FCW results with results of other 
+    %   implemented FCW algorithms the result mapping is as follows:
+    %    - Safe - situation status == 1
+    %    - Danger level 1,2 - driver should pay higher attention
+    %                       - situation status == 0
+    %    - Danger level 3 - the actual road situation is dangerous
+    %                     - situation status == -1
+    %
+    %% Return values
+    % Return values of this algorithms are as follows:
+    %
+    % * (-1) algorithm evaluates actual situation as dangerous
+    % 
+    % * (0)  algorithm evaluates actual situation as driver should pay bigger attention to road situation
+    % 
+    % * (1)  algorithm evaluates actual situation as safe
 
     properties (Constant, Access = private)
         Algorithm_Constants = TTC_FCW_Constants;
@@ -149,9 +172,12 @@ classdef TTC_FCW_Algo < FCW_Algo
             end
         end
 
-        function sit_status = define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
+        function [sit_status, warning_distance, critical_distance] = define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
             [ds_min, ds_max] = TTC_FCW_Algo.define_safety_braking_distance(velocity, age, area, steep, weight, angle, is_abs_on, road_type, road_condition);
-
+            
+            warning_distance = ds_max;%ds_min;
+            critical_distance = ds_min;%ds_max;
+            
             ttc = distance / velocity;
 
             if distance < ds_min
@@ -166,9 +192,9 @@ classdef TTC_FCW_Algo < FCW_Algo
     end
 
     methods (Static, Access = public)
-        function situation_status = Resolve(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
+        function [situation_status, warning_distance, critical_distance] = Resolve(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance)
             
-            tmp_situation_status = TTC_FCW_Algo.define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance);
+            [tmp_situation_status, warning_distance, critical_distance] = TTC_FCW_Algo.define_danger(velocity, age, road_type, road_condition, is_abs_on, area, steep, weight, angle, distance);
             
             if tmp_situation_status == "Safe"
                 situation_status = 1;
