@@ -67,8 +67,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Constants required by Berkeley FCW Algorithm</a></li></ul></div><pre class="codeinput"><span class="keyword">classdef</span> TTC_FCW_Constants &lt; handle
-</pre><h2 id="2">Constants required by Berkeley FCW Algorithm</h2><pre class="codeinput">    properties
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Constants required by TTC FCW Algorithm</a></li></ul></div><pre class="codeinput"><span class="keyword">classdef</span> TTC_FCW_Constants &lt; handle
+</pre><h2 id="2">Constants required by TTC FCW Algorithm</h2><pre class="codeinput">    properties
         brake_eff_max = 0.95, <span class="comment">% brake efficiency coefficient</span>
         brake_eff_min = 0.85, <span class="comment">% brake efficiency coefficient</span>
         t_p_max = 0.75,
@@ -82,26 +82,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
         rolling_resistance_coefficient = 0.015
     <span class="keyword">end</span>
 </pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><pre class="codeoutput">
-ans = 
-
-  TTC_FCW_Constants with properties:
-
-                         brake_eff_max: 0.9500
-                         brake_eff_min: 0.8500
-                               t_p_max: 0.7500
-                               t_p_min: 0.3000
-                                     g: 9.8066
-                          critical_ttc: 1.5000
-           equivalent_mass_coefficient: 1.0400
-                           air_density: 1.1800
-    aerodynamic_resistance_coefficient: 0.4500
-        rolling_resistance_coefficient: 0.0150
-
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 classdef TTC_FCW_Constants < handle
-    %% Constants required by Berkeley FCW Algorithm
+    %% Constants required by TTC FCW Algorithm
     
     properties
         brake_eff_max = 0.95, % brake efficiency coefficient
