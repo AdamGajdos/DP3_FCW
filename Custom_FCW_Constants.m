@@ -1,5 +1,5 @@
 classdef Custom_FCW_Constants < handle
-    %% Constants required by Berkeley FCW Algorithm    
+    %% Constants required by Our Custom FCW Algorithm    
     properties
         w_1 = 1.7           % weight for preferred warning distance in weighted avg.
         w_2 = 1.3           % weight for the other warning distance in weighted avg.

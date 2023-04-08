@@ -1,5 +1,5 @@
 classdef TTC_FCW_Constants < handle
-    %% Constants required by Berkeley FCW Algorithm
+    %% Constants required by TTC FCW Algorithm
     
     properties
         brake_eff_max = 0.95, % brake efficiency coefficient
