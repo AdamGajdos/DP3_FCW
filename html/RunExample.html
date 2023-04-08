@@ -1,0 +1,181 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example of Run</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-04-08"><meta name="DC.source" content="RunExample.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Example of Run</h1><!--introduction--><p>This is example of running FCW_Matlab_Main</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Variables initialization</a></li><li><a href="#2">Running the code</a></li></ul></div><h2 id="1">Variables initialization</h2><div><ul><li><b>weight</b> - vehicle weight in kg,</li></ul></div><div><ul><li><b>area</b> - frontal area of vehicle in cm^2,</li></ul></div><div><ul><li><b>age</b> - age(years) of driver,</li></ul></div><div><ul><li><b>is_abs_on</b> - indicator wheter ABS is active or not 0(<i>OFF</i>), 1(<i>ON</i>),</li></ul></div><div><ul><li><b>driver_delay</b> - delay of drivers reaction in s,</li></ul></div><div><ul><li><b>system_delay</b> - delay of systems reaction in s,</li></ul></div><div><ul><li><b>road_type</b> - type of road. Values are: 0(<i>ASPHALT</i>),1(<i>CONCRETE</i>),2(<i>SNOW</i>),3(<i>ICE</i>),</li></ul></div><div><ul><li><b>road_condition</b> - condition of road. Values are: 0(<i>WET), 1(_DRY</i>),</li></ul></div><div><ul><li><b>fcw_algorithm</b> - selected FCW algorithm. Values are: 0(<i>Berkeley</i>),  1(<i>Custom</i>), 2(<i>TTC</i>)</li></ul></div><div><ul><li><b>longitude</b> - longitude of current road point (current location),</li></ul></div><div><ul><li><b>latitude</b> - latitude of current road point (current location),</li></ul></div><div><ul><li><b>velocity</b> - velocity of vehicle in m/s,</li></ul></div><div><ul><li><b>relative_velocity</b> - relative velocity (v_lead - v_ours) in m/s,</li></ul></div><div><ul><li><b>deceleration</b> - deceleration of our vehicle in m/s^2,</li></ul></div><div><ul><li><b>distance</b> - distance from frontal obstacle/leading car in m,</li></ul></div><div><ul><li><b>steep</b> - steep of road. Values are: 1(<i>UPHILL</i>), -1(<i>DOWNHILL</i>),</li></ul></div><div><ul><li><b>angle</b> - angle of steep in &deg;,</li></ul></div><div><ul><li><b>run_all_algorithms</b> - indicator wheter we want to run all algorithms at once for comparison matter ( show differences in fcw algorithms's behaviour.</li></ul></div><pre class="codeinput">weight = 1602;
+area = 53941;
+age = 18;
+is_abs_on = 1;
+driver_delay = 0.8;
+system_delay = 0.1;
+road_type = 0;
+road_condition = 1;
+fcw_algorithm = 0;
+longitude = 21.9409;
+latitude = 48.9752;
+velocity = 19.7763;
+relative_velocity = 0.0013;
+deceleration = -0.2698;
+distance = 96.8549;
+steep = 1;
+angle = 0;
+run_all_algorithms = 0;
+</pre><h2 id="2">Running the code</h2><pre class="codeinput"><span class="keyword">if</span> run_all_algorithms == 0
+    [situation_statuses, warning_distances, critical_distances] = FCW_Matlab_Main(weight, area, age, is_abs_on, driver_delay, system_delay, road_type, road_condition, fcw_algorithm, <span class="keyword">...</span>
+            longitude, latitude, velocity, relative_velocity, deceleration, distance, steep, angle, run_all_algorithms);
+
+    situation_status_berkeley = double(situation_statuses(1));
+    berkeley_fcw_warning_distance = double(warning_distances(1));
+    berkeley_fcw_critical_braking_distance = double(critical_distances(1));
+
+    fprintf(<span class="string">'Situation status: %d\n'</span>, situation_status_berkeley);
+    fprintf(<span class="string">'Warning distance: %d m\n'</span>,berkeley_fcw_warning_distance);
+    fprintf(<span class="string">'Critical braking distance: %d m\n'</span>, berkeley_fcw_critical_braking_distance);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Situation status: 1
+Warning distance: 2.582380e+01 m
+Critical braking distance: 1.977760e+01 m
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example of Run
+% This is example of running FCW_Matlab_Main
+
+%% Variables initialization
+% * *weight* - vehicle weight in kg,
+%
+% * *area* - frontal area of vehicle in cm^2, 
+%
+% * *age* - age(years) of driver, 
+%
+% * *is_abs_on* - indicator wheter ABS is active or not 0(_OFF_), 1(_ON_), 
+%
+% * *driver_delay* - delay of drivers reaction in s, 
+%
+% * *system_delay* - delay of systems reaction in s, 
+%
+% * *road_type* - type of road. Values are: 0(_ASPHALT_),1(_CONCRETE_),2(_SNOW_),3(_ICE_), 
+%
+% * *road_condition* - condition of road. Values are: 0(_WET), 1(_DRY_), 
+%
+% * *fcw_algorithm* - selected FCW algorithm. Values are: 0(_Berkeley_),
+%  1(_Custom_), 2(_TTC_)
+%
+% * *longitude* - longitude of current road point (current location), 
+%
+% * *latitude* - latitude of current road point (current location), 
+%
+% * *velocity* - velocity of vehicle in m/s, 
+%
+% * *relative_velocity* - relative velocity (v_lead - v_ours) in m/s, 
+%
+% * *deceleration* - deceleration of our vehicle in m/s^2, 
+%
+% * *distance* - distance from frontal obstacle/leading car in m, 
+%
+% * *steep* - steep of road. Values are: 1(_UPHILL_), -1(_DOWNHILL_), 
+%
+% * *angle* - angle of steep in °, 
+%
+% * *run_all_algorithms* - indicator wheter we want to run all algorithms at
+% once for comparison matter ( show differences in fcw algorithms's
+% behaviour.
+%
+weight = 1602;
+area = 53941; 
+age = 18; 
+is_abs_on = 1; 
+driver_delay = 0.8; 
+system_delay = 0.1; 
+road_type = 0;
+road_condition = 1; 
+fcw_algorithm = 0;
+longitude = 21.9409; 
+latitude = 48.9752; 
+velocity = 19.7763; 
+relative_velocity = 0.0013; 
+deceleration = -0.2698; 
+distance = 96.8549; 
+steep = 1; 
+angle = 0;
+run_all_algorithms = 0;
+
+%% Running the code
+if run_all_algorithms == 0
+    [situation_statuses, warning_distances, critical_distances] = FCW_Matlab_Main(weight, area, age, is_abs_on, driver_delay, system_delay, road_type, road_condition, fcw_algorithm, ...
+            longitude, latitude, velocity, relative_velocity, deceleration, distance, steep, angle, run_all_algorithms);
+    
+    situation_status_berkeley = double(situation_statuses(1));
+    berkeley_fcw_warning_distance = double(warning_distances(1));
+    berkeley_fcw_critical_braking_distance = double(critical_distances(1));
+
+    fprintf('Situation status: %d\n', situation_status_berkeley);
+    fprintf('Warning distance: %d m\n',berkeley_fcw_warning_distance);
+    fprintf('Critical braking distance: %d m\n', berkeley_fcw_critical_braking_distance);
+end
+##### SOURCE END #####
+--></body></html>
