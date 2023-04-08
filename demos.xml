@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<demos>
+   <name>DP3_FCW_Test</name>
+   <type>toolbox</type>
+    <icon>HelpIcon.DEMOS</icon>
+   <description>Test</description>
+   <demosection>
+      <label>DP3_FCW</label>
+      <demoitem>
+         <label>Run Example</label>
+         <type>M-File</type>
+         <source>RunExample</source>
+         <file>html/RunExample.html</file>
+      </demoitem>
+   </demosection>
+</demos>
