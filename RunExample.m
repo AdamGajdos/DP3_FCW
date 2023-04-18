@@ -16,7 +16,7 @@
 %
 % * *road_type* - type of road. Values are: 0(_ASPHALT_),1(_CONCRETE_),2(_SNOW_),3(_ICE_), 
 %
-% * *road_condition* - condition of road. Values are: 0(_WET), 1(_DRY_), 
+% * *road_condition* - condition of road. Values are: 0(_WET_), 1(_DRY_), 
 %
 % * *fcw_algorithm* - selected FCW algorithm. Values are: 0(_Berkeley_),
 %  1(_Custom_), 2(_TTC_)
