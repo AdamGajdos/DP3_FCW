@@ -7,7 +7,8 @@ classdef Custom_FCW_Algo < FCW_Algo
     %   compared to these distances. When distance < d_w then the warning
     %   should be presented to driver. When distance < d_br then driver 
     %   should start braking immidiately or automatic emergency brakes 
-    %   should be applied. 
+    %   should be applied. The formulas for d_w and d_br are from work 
+    %   doi: 10.2307/44741070.
     % This algorithms approach is that when calculating d_w there are 
     %   2 existing algorithm's which affects the final d_w by ratio 
     %   defined by relative velocity (by weighted average). Same principle 
